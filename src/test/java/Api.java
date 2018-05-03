@@ -21,6 +21,10 @@ interface Api {
     @Multipart
     Call<ResponseBody> upload(@Part MultipartBody.Part file);
 
+    @POST("/uploadFiles")
+    @Multipart
+    Call<ResponseBody> uploadFiles(@Part MultipartBody.Part[] file);
+
     @PUT("/")
     Call<ResponseBody> put(@Query("id") String id);
 

@@ -17,7 +17,7 @@ interface Api3 {
 
     @POST("/upload")
     @Multipart
-    Single<Result<String>> upload(@Part MultipartBody.Part file);
+    Single<Result<String>> upload(@Part MultipartBody.Part file,@Header("cache") int time);
 
     @PUT("/")
     Single<Result<String>> put(@Query("id") String id);

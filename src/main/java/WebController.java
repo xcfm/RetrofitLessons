@@ -48,6 +48,12 @@ public class WebController {
         return Result.success("FileName " + file.getOriginalFilename() + " FileSize:" + file.getSize());
     }
 
+    @RequestMapping(path = "/uploadFiles")
+    Result<String> file(@RequestParam("file") List<MultipartFile> files) {
+        System.out.println(new Gson().toJson(files));
+        return Result.success("FileCount" + files.size());
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(WebController.class, args);

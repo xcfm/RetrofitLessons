@@ -42,8 +42,9 @@ public class Lesson3 {
                     System.out.println(Thread.currentThread().getName());
                     RequestBody body = RequestBody.create(MediaType.parse("application/otcet-stream"), new File("1.txt"));
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", "1.txt", body);
-                    return api.upload(part);
+                    return api.upload(part,data.code);
                 })
+                .flatMap(upRes -> api.put(upRes.data))
                 .observeOn(Schedulers.newThread())
                 .subscribe(stringResult -> {
                             System.out.println(Thread.currentThread().getName());
@@ -53,4 +54,5 @@ public class Lesson3 {
                         Throwable::printStackTrace);
         countDownLatch.await();
     }
+
 }

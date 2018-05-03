@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.File;
@@ -24,14 +23,13 @@ public class Lesson1 {
                 .baseUrl("http://127.0.0.1:8080")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         api = retrofit.create(Api.class);
     }
 
     @Test
     public void testGet() throws IOException {
-        api.getHome().execute();
+        System.out.println(api.getHome().execute().body().string());
     }
 
     @Test
@@ -49,6 +47,7 @@ public class Lesson1 {
     public void testInfo() throws IOException {
         api.info("abc").execute();
     }
+
     @Test
     public void testInfo2() throws IOException {
         Response<ResponseBody> abc = api.info("abc").execute();
@@ -60,5 +59,15 @@ public class Lesson1 {
         RequestBody body = RequestBody.create(MediaType.parse("application/otcet-stream"), new File("1.txt"));
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", "1.txt", body);
         api.upload(part).execute();
+    }
+
+    @Test
+    public void testUploads() throws IOException {
+        RequestBody body = RequestBody.create(MediaType.parse("application/otcet-stream"), new File("1.txt"));
+        MultipartBody.Part part = MultipartBody.Part.createFormData("file", "1.txt", body);
+
+        RequestBody body2 = RequestBody.create(MediaType.parse("application/otcet-stream"), new File("2.txt"));
+        MultipartBody.Part part2 = MultipartBody.Part.createFormData("file", "2.txt", body2);
+        api.uploadFiles(new MultipartBody.Part[]{part, part2}).execute();
     }
 }
